@@ -31,7 +31,7 @@ export const config = {
                 });
 
                 if(user && user.password){
-                    const isMatch = compareSync(credentials.password, user.password);
+                    const isMatch = compareSync(credentials.password as string, user.password);
 
                     if(isMatch){
                         return {
@@ -48,6 +48,13 @@ export const config = {
         })
     ],
     callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+                token.email = user.email;
+            }
+            return token;
+        },
         async session({session, user, trigger, token}: any){
             // Set the user ID from the token
             session.user.id = token.sub;
