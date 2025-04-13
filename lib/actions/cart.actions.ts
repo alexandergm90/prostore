@@ -167,7 +167,7 @@ export async function removeItemFromCart(productId: string) {
 
         // Check if only one in qty
         if(exist.qty === 1) {
-            cart.items = (cart.items as CartItem[]).filter(i => i.productId === exist.productId);
+            cart.items = (cart.items as CartItem[]).filter(i => i.productId !== exist.productId);
         } else {
             (cart.items as CartItem[]).find((i) => i.productId === productId)!.qty = exist.qty - 1;
         }
