@@ -14,3 +14,11 @@ export const signUpDefaultValues = {
     password: '',
     confirmPassword: '',
 }
+
+export const shippingAddressDefaultValues = {
+    fullName: 'John Doe',
+    streetAddress: '123 Main Street',
+    city: 'Galati',
+    postalCode: '12145',
+    country: 'Romania',
+}
