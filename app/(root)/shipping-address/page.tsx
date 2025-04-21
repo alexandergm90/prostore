@@ -3,7 +3,7 @@ import { getMyCart } from "@/lib/actions/cart.actions";
 import { getUserById} from "@/lib/actions/user.actions";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { ShippingAddress } from "@/types";
+import { ShippingAddress as ShippingAddressType } from "@/types";
 import ShippingAddressForm from "./shipping-address-form";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ const ShippingAddress = async () => {
     if(!userId) redirect('/sign-in')
     const user = await getUserById(userId);
 
-    return <ShippingAddressForm address={user.address as ShippingAddress} />
+    return <ShippingAddressForm address={user.address as ShippingAddressType} />
 }
 
 export default ShippingAddress;
