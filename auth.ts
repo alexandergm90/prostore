@@ -69,13 +69,10 @@ export const config = {
 
 
                 }
-                console.log("TRIGGER: ", trigger)
 
                 if(trigger === 'signIn' || trigger === 'signUp') {
                     const cookiesObject = await cookies();
                     const sessionCartId = cookiesObject.get('sessionCartId')?.value;
-
-                    console.log("SESSION CART ID: ", sessionCartId)
 
                     if(sessionCartId) {
                         const sessionCart = await prisma.cart.findFirst({
@@ -112,6 +109,25 @@ export const config = {
             return session;
         },
         authorized({ request, auth }: any){
+            // Array of regex patterns of paths we want to protect
+            const protectedPaths = [
+                /\/shipping-address/,
+                /\/payment-method/,
+                /\/place-order/,
+                /\/profile/,
+                /\/user\/(.*)/,
+                /\/order\/(.*)/,
+                /\/admin/,
+            ]
+
+            // Get pathname from the req URL object
+            const { pathname } = request.nextUrl;
+
+            // Check if user is not authenticated and accessing a protected path
+            if(!auth && protectedPaths.some(pattern => pattern.test(pathname))){
+                return false;
+            }
+
             // Check for session cart cookie
             if(!request.cookies.get('sessionCartId')){
                 // Generate new session cart id cookie
